@@ -1,0 +1,63 @@
+import std.stdio;
+import std.net.curl;
+import std.conv;
+import std.algorithm.searching;
+import std.regex.split;
+
+//Class instance is specified for one website.
+class PaserHtml
+{ 
+    public:
+        this(string url)
+        {
+            //urlListArr = new string[0];
+            GetHtml(url);
+        }
+
+        string ExtractString(string begin,string end)
+        {
+            return "";
+        }
+
+        void EnumerateAllUrl()
+        {
+            //extend dynamic array
+            //urlListArr.length = count (rawHtml,"http");
+            
+            urlListArr=split(rawHtml,"\"");
+        }
+
+        //Getter
+        auto html()
+        {
+            return rawHtml;
+        }
+
+        auto urlList()
+        {
+            return this.urlListArr;
+        }
+
+    private:
+        void GetHtml(string url)
+        {
+            auto rawHtml=get(url);
+            this.rawHtml=to!string(rawHtml);
+        }
+
+    private:
+        string rawHtml;
+        string [] urlListArr;
+}
+
+void main()
+{
+    auto ph = new PaserHtml("https://www.google.com/");
+    writeln(ph.html);
+    ph.EnumerateAllUrl();
+    for(int i=0;i<ph.urlList.length;i++)
+    {
+        writeln(urlList[i]);
+    }
+}
+
