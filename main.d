@@ -10,13 +10,8 @@ class PaserHtml
     public:
         this(string url)
         {
-            //urlListArr = new string[0];
-            GetHtml(url);
-        }
-
-        string ExtractString(string begin,string end)
-        {
-            return "";
+            auto rawHtml=get(url);
+            this.rawHtml=to!string(rawHtml);
         }
 
         void EnumerateAllUrl()
@@ -26,14 +21,16 @@ class PaserHtml
             
             //Leave only http or https
             import std.algorithm;
-            for(int i=0;i<urlListArr.length;i++)
+            string [] arr=urlListArr;
+            for(int i=0;i<arr.length;i++)
             {
-                if(!canFind(urlListArr[i],"http"))
-                    urlListArr[i]="";
+                //delete none-url strings and url in the comments
+                if(!canFind(arr[i],"http") || canFind(arr[i],"<!--"))
+                    arr[i]="";
             }
-            auto arr=urlListArr;
+
+            //remove spaced elements
             urlListArr.length=0;
-            
             for(int i=0;i<arr.length;i++)
             {
                 if(arr[i]!=""){
@@ -55,13 +52,6 @@ class PaserHtml
         }
 
     private:
-        void GetHtml(string url)
-        {
-            auto rawHtml=get(url);
-            this.rawHtml=to!string(rawHtml);
-        }
-
-    private:
         string rawHtml;
         string [] urlListArr;
 }
@@ -70,12 +60,11 @@ void main()
 {
     auto ph = new PaserHtml("https://dlang.org/library/std/algorithm/iteration/splitter.html");
     ph.EnumerateAllUrl();
+
     for(int i=0;i<ph.urlList.length;i++)
     {
-        //if(ph.urlList[i]== "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js")
-        //if(canFind(ph.urlList[i],"http"))
-        writeln(ph.urlList[i]);
-        
+        writeln(i);
+        writeln(ph.urlList[i]);   
     }
 }
 
